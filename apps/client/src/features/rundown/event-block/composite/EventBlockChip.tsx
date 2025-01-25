@@ -6,7 +6,7 @@ import { usePlayback, useTimeUntil } from '../../../../common/hooks/useSocket';
 import useReport from '../../../../common/hooks-query/useReport';
 import useRundown from '../../../../common/hooks-query/useRundown';
 import { cx } from '../../../../common/utils/styleUtils';
-import { formatDuration, getTimeToStart } from '../../../../common/utils/time';
+import { formatDuration, formatTime, getTimeToStart } from '../../../../common/utils/time';
 import { tooltipDelayFast } from '../../../../ontimeConfig';
 
 import style from './EventBlockChip.module.scss';
@@ -93,8 +93,8 @@ function EventUntil(props: EventUntilProps) {
   const timeUntil = getTimeToStart(clock, timeStart, 0, offset);
   const isDue = timeUntil <= MILLIS_PER_SECOND;
 
-  //show seconds if the amount is less than 2 minutes as it could then represent up to 50% of the actual value
-  const timeDisplay = isDue ? 'DUE' : `${formatDuration(Math.abs(timeUntil), timeUntil > MILLIS_PER_MINUTE * 2)}`;
+  //show time in hh:mm:ss for upcoming event-blocks
+  const timeDisplay = formatTime(Math.abs(timeExpStart));
   return (
     <Tooltip label='Expected time until start' openDelay={tooltipDelayFast}>
       <div className={cx([style.chip, isDue ? style.due : null, className])}>{timeDisplay}</div>
